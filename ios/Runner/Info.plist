@@ -28,6 +28,10 @@
     <string>To read or save photos and videos.</string>
     <key>UIFileSharingEnabled</key>
     <true/>
+    <key>NSCameraUsageDescription</key>
+    <string>To use taking pictures.</string>
+    <key>NSMicrophoneUsageDescription</key>
+    <string>To use recording videos.</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
