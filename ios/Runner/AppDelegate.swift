@@ -1,6 +1,7 @@
 import UIKit
 import Flutter
 import AVFoundation
+import Photos
 
 @UIApplicationMain
 @objc class AppDelegate: FlutterAppDelegate {
@@ -18,7 +19,12 @@ import AVFoundation
         channel.setMethodCallHandler({
             (call: FlutterMethodCall, result: @escaping FlutterResult) -> Void in
             if call.method == "generate" {
-                self.runLivePhotoConvertion(rawURL: "https://img.gifmagazine.net/gifmagazine/images/1545437/original.mp4")
+                let args = call.arguments as! [String: Any]
+                guard let videoURL = args["videoURL"] as? String else {
+                    result(FlutterError.init(code: "ArgumentError", message: "Required argument does not exist.", details: nil))
+                    return
+                }
+                self.runLivePhotoConvertion(rawURL: videoURL)
             }
         })
 
@@ -34,11 +40,20 @@ import AVFoundation
     // LivePhoto変換エントリポイント
     private func runLivePhotoConvertion(rawURL: String) {
         if let videoURL = URL(string: rawURL) {
-            self.downloadAsync(
-                url: videoURL,
-                to: self.filePath(forKey: SRC_KEY),
-                completion: self.convertMp4ToMov
-            )
+            let photos = PHPhotoLibrary.authorizationStatus()
+            if photos == .notDetermined {
+                PHPhotoLibrary.requestAuthorization({status in
+                    if status == .authorized{
+                        self.downloadAsync(
+                            url: videoURL,
+                            to: self.filePath(forKey: self.SRC_KEY),
+                            completion: self.convertMp4ToMov
+                        )
+                    } else {
+                        print("CameraRoll permission denied")
+                    }
+                })
+            }
         }
     }
     

@@ -51,10 +51,8 @@ class _MyHomePageState extends State<MyHomePage> {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           _methodChannel.invokeMethod("generate", <String, dynamic>{
-            "photoURL":
-                "https://gmassets.s3-ap-northeast-1.amazonaws.com/oomomo-live.png",
             "videoURL":
-                "https://gmassets.s3-ap-northeast-1.amazonaws.com/oomomo-live.mov",
+                "https://img.gifmagazine.net/gifmagazine/images/3870471/original.mp4",
           });
         },
         tooltip: 'Increment',
